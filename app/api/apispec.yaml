@@ -28,5 +28,5 @@ components:
 # these will show up under 'Schemas' in the UI
 components:
   schemas:
-    Todo:
-      $ref: '#/definitions/Todo'
+    Scholarship:
+      $ref: '#/definitions/Scholarship'

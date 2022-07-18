@@ -17,15 +17,15 @@ def find(f, seq):
       return item
 
 
-@app.route('/api/v1/todos')
-def list_entries():
-  """ List all todo entries
+@app.route('/api/v1/scholarships')
+def list_scholarships():
+  """ List all scholarship entries
   ---
   tags:
-    - todo
+    - Scholarships
 
   definitions:
-    Todo:
+    Scholarship:
       type: object
       properties:
         id: { type: string }
@@ -43,7 +43,7 @@ def list_entries():
           schema:
             type: array
             items:
-              $ref: '#/definitions/Todo'
+              $ref: '#/definitions/Scholarship'
   """
   return jsonify(todos)
 
@@ -53,7 +53,7 @@ def get_entry(id):
   """ Get a todo entry
   ---
   tags:
-    - todo
+    - Scholarships
   parameters:
     - name: id
       in: path
@@ -85,7 +85,7 @@ def create():
   """ Create a new todo entry
   ---
   tags:
-    - todo
+    - Scholarships
   requestBody:
     required: true
     content:
@@ -108,7 +108,7 @@ def create():
       content:
         application/json:
           schema:
-            $ref: '#/definitions/Todo'
+            $ref: '#/definitions/Scholarship'
   """
   json = request.get_json()
   validate(json, 'CreateTodo')
@@ -123,7 +123,7 @@ def update(id):
   """ Update or create a todo entry
   ---
   tags:
-    - todo
+    - Scholarships
   parameters:
     - name: id
       in: path
@@ -133,7 +133,7 @@ def update(id):
     content:
       application/json:
         schema:
-          $ref: '#/definitions/Todo'
+          $ref: '#/definitions/Scholarship'
 
   responses:
     400:
@@ -142,7 +142,7 @@ def update(id):
       content:
         application/json:
           schema:
-            $ref: '#/defintions/Todo'
+            $ref: '#/defintions/Scholarship'
   """
   json = request.get_json()
   validate(json, 'Todo')
@@ -163,7 +163,7 @@ def patch(id):
   """ Update a todo entry
   ---
   tags:
-    - todo
+    - Scholarships
   parameters:
     - name: id
       in: path
@@ -211,7 +211,7 @@ def patch(id):
       content:
         application/json:
           schema:
-            $ref: '#/definitions/Todo'
+            $ref: '#/definitions/Scholarship'
 
   """
   json = request.get_json()
@@ -243,7 +243,7 @@ def delete(id):
   """ Remove a todo entry
   ---
   tags:
-    - todo
+    - Scholarships
   parameters:
     - name: id
       in: path
@@ -256,7 +256,7 @@ def delete(id):
       content:
         application/json:
           schema:
-            $ref: '#/definitions/Todo'
+            $ref: '#/definitions/Scholarship'
   """
   entry = find(lambda x: x['id'] == id, todos)
   if entry is None:
