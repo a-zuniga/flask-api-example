@@ -6,7 +6,7 @@ from flask_staticdirs import staticdirs
 from . import api 
 
 app = Flask(__name__)
-api.init_app(app, version='1.0.0', title='Flask API Example')
+api.init_app(app, version='1.0.0', title='UndocuGuide API')
 
 # serve the frontend application from app/public
 public = os.path.join(os.path.dirname(__file__), 'public')
