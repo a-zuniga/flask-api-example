@@ -48,7 +48,7 @@ def list_scholarships():
   return jsonify(todos)
 
 
-@app.route('/api/v1/todo/<id>')
+@app.route('/api/v1/scholarship/<id>')
 def get_entry(id):
   """ Get a todo entry
   ---
@@ -80,7 +80,7 @@ def get_entry(id):
   return jsonify(entry)
 
 
-@app.route('/api/v1/todo', methods=['POST'])
+@app.route('/api/v1/scholarship', methods=['POST'])
 def create():
   """ Create a new todo entry
   ---
@@ -118,7 +118,7 @@ def create():
   return jsonify(json)
 
 
-@app.route('/api/v1/todo/<id>', methods=['PUT'])
+@app.route('/api/v1/scholarship/<id>', methods=['PUT'])
 def update(id):
   """ Update or create a todo entry
   ---
@@ -158,7 +158,7 @@ def update(id):
   return jsonify(json)
 
 
-@app.route('/api/v1/todo/<id>', methods=['PATCH'])
+@app.route('/api/v1/scholarship/<id>', methods=['PATCH'])
 def patch(id):
   """ Update a todo entry
   ---
@@ -238,7 +238,7 @@ def patch(id):
   return jsonify(result)
 
 
-@app.route('/api/v1/todo/<id>', methods=['DELETE'])
+@app.route('/api/v1/scholarship/<id>', methods=['DELETE'])
 def delete(id):
   """ Remove a todo entry
   ---
