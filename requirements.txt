@@ -1,7 +1,10 @@
-cryptography
-python-dotenv
-flask
-flasgger
+cryptography~=37.0.4
+python-dotenv~=0.20.0
+flask~=2.1.3
+flasgger~=0.9.5
 flask_staticdirs
-pyjwt
-jsonpatch
+pyjwt~=2.4.0
+jsonpatch~=1.32
+
+pymongo~=4.1.1
+PyYAML~=6.0

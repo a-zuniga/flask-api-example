@@ -1,11 +1,20 @@
 import uuid
 import jsonpatch
+import pymongo
+import os
 from flask import abort, Blueprint, jsonify, request
 from datetime import datetime, timezone
 from ..swagger import validate
+from pymongo import MongoClient
 
+user = os.environ.get("DB_USER")
+secret = os.environ.get("DB_PASS")
 app_name = __name__.split(".")[-1]
 app = Blueprint(app_name, app_name)
+cluster = MongoClient(f"mongodb+srv://{user}:{secret}@undocuguide.doy3t.mongodb.net/?retryWrites=true&w=majority")
+db = cluster["UndocuGuide"]
+collection = db["Scholarships"]
+
 
 todos = [] # this example just updates this array, probably should update a database
 
@@ -111,11 +120,12 @@ def create():
             $ref: '#/definitions/Scholarship'
   """
   json = request.get_json()
-  validate(json, 'CreateTodo')
-  json['id'] = str(uuid.uuid4())
-  json['created'] = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
-  todos.append(json)
-  return jsonify(json)
+  #validate(json, 'CreateTodo')
+  #json['id'] = str(uuid.uuid4())
+  #json['created'] = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
+  #todos.append(json)
+  collection.insert_one(json)
+  return json
 
 
 @app.route('/api/v1/scholarship/<id>', methods=['PUT'])
