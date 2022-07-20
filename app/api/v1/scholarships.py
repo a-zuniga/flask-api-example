@@ -1,17 +1,21 @@
+from dotenv import load_dotenv
+load_dotenv() # before other imports so os.getenv will include .env values
 import uuid
 import jsonpatch
 import pymongo
 import os
-from flask import abort, Blueprint, jsonify, request
+from bson.json_util import dumps, loads
+from flask import abort, Blueprint, jsonify, request, current_app
 from datetime import datetime, timezone
 from ..swagger import validate
 from pymongo import MongoClient
 
-user = os.environ.get("DB_USER")
-secret = os.environ.get("DB_PASS")
+user = os.getenv("DB_USER")
+secret = os.getenv("DB_PASS")
+uri_path = os.getenv("URI_PATH")
 app_name = __name__.split(".")[-1]
 app = Blueprint(app_name, app_name)
-cluster = MongoClient(f"mongodb+srv://{user}:{secret}@undocuguide.doy3t.mongodb.net/?retryWrites=true&w=majority")
+cluster = MongoClient(f"mongodb+srv://{user}:{secret}@{uri_path}")
 db = cluster["UndocuGuide"]
 collection = db["Scholarships"]
 
@@ -38,9 +42,9 @@ def list_scholarships():
       type: object
       properties:
         id: { type: string }
-        note: { type: string }
+        name: { type: string }
         due: { type: string, format: date-time }
-        created: { type: string, format: date-time }
+        state: { type: string}
         completed: { type: string, format: date-time }
         last_updated: { type: string, format: date-time }
       required: [ id, note, created ]
@@ -54,12 +58,16 @@ def list_scholarships():
             items:
               $ref: '#/definitions/Scholarship'
   """
-  return jsonify(todos)
+  cursor = collection.find().limit(10)
+  list_cur = list(cursor)
+  result = dumps(list_cur)
+
+  return current_app.response_class(result, mimetype="application/json")
 
 
 @app.route('/api/v1/scholarship/<id>')
 def get_entry(id):
-  """ Get a todo entry
+  """ Get a scholarship entry
   ---
   tags:
     - Scholarships
@@ -91,7 +99,7 @@ def get_entry(id):
 
 @app.route('/api/v1/scholarship', methods=['POST'])
 def create():
-  """ Create a new todo entry
+  """ Create a new scholarship entry
   ---
   tags:
     - Scholarships
@@ -130,7 +138,7 @@ def create():
 
 @app.route('/api/v1/scholarship/<id>', methods=['PUT'])
 def update(id):
-  """ Update or create a todo entry
+  """ Update or create a scholarship entry
   ---
   tags:
     - Scholarships
@@ -170,7 +178,7 @@ def update(id):
 
 @app.route('/api/v1/scholarship/<id>', methods=['PATCH'])
 def patch(id):
-  """ Update a todo entry
+  """ Update a scholarship entry
   ---
   tags:
     - Scholarships
@@ -250,7 +258,7 @@ def patch(id):
 
 @app.route('/api/v1/scholarship/<id>', methods=['DELETE'])
 def delete(id):
-  """ Remove a todo entry
+  """ Remove a scholarship entry
   ---
   tags:
     - Scholarships
